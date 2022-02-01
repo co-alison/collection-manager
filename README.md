@@ -1,14 +1,3 @@
-# My Personal Project
-
-## A subtitle
-
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
-
-An example of text with **bold** and *italic* fonts.  
-
 # Collection Manager Application
 
 ## CPSC 210 W2 Personal Project
@@ -32,7 +21,7 @@ this passion to fellow collectors, or anyone who wants to start!
 
 # User Stories
 
-- As a user, I want to be able to add an item to my collection.
+- As a user, I want to be able to add or remove an item to my collection.
 - As a user, I want to be able to view a list of collections or items.
 - As a user, I want to be able to select an item and see more details.
 - As a user, I want to be able to update information of an item.
