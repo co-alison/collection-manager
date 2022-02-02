@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 // represents a single item in a collection that has a name, item number,
-// release date, current market price, list of previous prices,
+// release date, current market price,
 // edition, condition, and comments (optional)
 public class Item {
 
@@ -24,10 +24,16 @@ public class Item {
         return 0.0; // stub
     }
 
-    // REQUIRES: previous prices have at least one price in list
+    // REQUIRES: item has a current market price and original price
     // EFFECTS: calculates overall price trend from previous prices (percent increase or decrease)
     public Double calculatePriceTrend() {
         return 0.0; // stub
+    }
+
+    // REQUIRES: item must have a release date
+    // EFFECTS: calculates age as of given date in format: "x Days, y Months, z Years Old"
+    public String calculateAge() {
+        return null;
     }
 
     // REQUIRES: comment is not an empty string
@@ -38,6 +44,23 @@ public class Item {
     }
 
     // TODO: add setters to update fields
+
+    public void setName(String name) {
+        // stub
+    }
+
+    public void setItemNumber(Integer itemNumber) {
+        // stub
+    }
+
+    // EFFECTS: sets the condition of item to be new, mint condition, good, fair, or poor
+    public void setCondition() {
+        // stub
+    }
+
+    public void setEdition() {
+        // stub
+    }
 
     // getters
 
@@ -54,10 +77,6 @@ public class Item {
     }
 
     public Double getCurrentMarketPrice() {
-        return null; // stub
-    }
-
-    public List<Double> getPreviousPrices() {
         return null; // stub
     }
 

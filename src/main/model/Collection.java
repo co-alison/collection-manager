@@ -22,10 +22,7 @@ public class Collection {
         // stub
     }
 
-    // EFFECTS: prints list of collections
-    public void viewCollection(Collection collection) {
-        // stub
-    }
+    // TODO: viewItem() and viewCollection() ?
 
     // REQUIRES: searchBy is a field in Item, cannot search comments
     // EFFECTS: prints list of item that match searchBy
