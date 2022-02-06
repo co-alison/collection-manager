@@ -3,10 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 // represents a single item in a collection that has a name, item number,
 // release date, current market price,
@@ -51,19 +48,20 @@ public class Item {
     // REQUIRES: prices has at least one price in list
     // MODIFIES: this
     // EFFECTS: sets currentMarketPrice to the average of prices given
-    public void calculateAverageMarketPrice(List<Double> prices) {
+    public Double calculateAverageMarketPrice(List<Double> prices) {
         Double sum = 0.0;
         for (Double p : prices) {
             sum += p;
         }
         Double average = sum / prices.size();
         this.currentMarketPrice = average;
+        return average;
     }
 
     // REQUIRES: item has a current market price
     // EFFECTS: calculates overall price trend from given price (percent increase or decrease)
     public Double calculatePriceTrend(Double originalPrice) {
-        Double percentChange = ((originalPrice - currentMarketPrice) / originalPrice) * 100;
+        Double percentChange = ((currentMarketPrice - originalPrice) / originalPrice) * 100;
         return percentChange;
     }
 
@@ -103,8 +101,18 @@ public class Item {
 
     // TODO:
     // EFFECTS: sets the condition of item to be new, mint condition, good, fair, or poor
-    public void setCondition() {
-        // stub
+    public void setCondition(String c) {
+        if (c.equals("n")) {
+            condition = "New";
+        } else if (c.equals("m")) {
+            condition = "Mint Condition";
+        } else if (c.equals("g")) {
+            condition = "Good";
+        } else if (c.equals("f")) {
+            condition = "Fair";
+        } else if (c.equals("p")) {
+            condition = "Poor";
+        }
     }
 
     public void setEdition(String edition) {
@@ -120,6 +128,9 @@ public class Item {
         this.releaseDate = date;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
     // getters
 
     public String getName() {

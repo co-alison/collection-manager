@@ -50,7 +50,7 @@ public class ItemTest {
         prices.add(49.45);
         funkoPop.calculateAverageMarketPrice(prices);
         assertEquals(funkoPop.calculatePriceTrend(15.00),
-                ((15.00 - funkoPop.getCurrentMarketPrice()) / 15.00) * 100);
+                ((funkoPop.getCurrentMarketPrice() - 15.00) / 15.00) * 100);
     }
 
     @Test
