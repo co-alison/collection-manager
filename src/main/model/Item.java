@@ -91,6 +91,8 @@ public class Item {
             condition = "Fair";
         } else if (c.equals("p")) {
             condition = "Poor";
+        } else {
+            condition = defaultCondition;
         }
     }
 

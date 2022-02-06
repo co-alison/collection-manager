@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ItemTest {
     private Item funkoPop;
+    private String defaultCondition = "NA";
 
     @BeforeEach
     void setup() {
@@ -88,6 +89,9 @@ public class ItemTest {
 
         funkoPop.setCondition("p");
         assertEquals(funkoPop.getCondition(), "Poor");
+
+        funkoPop.setCondition("x");
+        assertEquals(funkoPop.getCondition(), "NA");
     }
 
 
