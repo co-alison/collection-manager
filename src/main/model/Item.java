@@ -1,8 +1,5 @@
 package model;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 // represents a single item in a collection that has a name, item number,
@@ -53,36 +50,18 @@ public class Item {
         for (Double p : prices) {
             sum += p;
         }
-        Double average = sum / prices.size();
+        double average = sum / prices.size();
         average = Math.round(average * 100.0) / 100.0;
         this.currentMarketPrice = average;
         return average;
     }
 
-    // REQUIRES: item has a current market price
     // EFFECTS: calculates overall price trend from given price (percent increase or decrease),
     // rounds to 2 decimal places
     public Double calculatePriceTrend(Double originalPrice) {
-        Double percentChange = ((currentMarketPrice - originalPrice) / originalPrice) * 100;
+        double percentChange = ((currentMarketPrice - originalPrice) / originalPrice) * 100;
         percentChange = Math.round(percentChange * 100.0) / 100.0;
         return percentChange;
-    }
-
-    // REQUIRES: item must have a release date; given date must be in format yyyy MM dd
-    // EFFECTS: calculates age as of given date in format: "x Days, y Months, z Years Old"
-    public String calculateAge(String currentDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
-        LocalDate d1 = LocalDate.parse(currentDate, formatter);
-        LocalDate d2 = LocalDate.parse(releaseDate, formatter);
-
-        Period period = Period.between(d2, d1);
-
-        int years = Math.abs(period.getYears());
-        int months = Math.abs(period.getMonths());
-        int days  = Math.abs(period.getDays());
-
-        String age = days + " Days, " + months + " Months, " + years + " Years Old";
-        return age;
     }
 
     // REQUIRES: comment is not an empty string
@@ -166,7 +145,8 @@ public class Item {
     }
 
     public List<String> getComments() {
-        List<String> emptyList = new ArrayList<>(Arrays.asList("NA"));
+        List<String> emptyList = new ArrayList<>();
+        emptyList.add("NA");
         if (comments.size() == 0) {
             return emptyList;
         } else {

@@ -38,13 +38,6 @@ public class Collection {
         return totalValue;
     }
 
-    // TODO: searchCollectionByFieldKeyword
-    // REQUIRES: searchBy is a field in Item, keyword matches field, cannot search comments
-    // EFFECTS: returns list of item that match searchBy
-    public List<Item> searchCollectionByFieldKeyword(String searchBy, String keyword) {
-        return null; // stub
-    }
-
     // getters
 
     public String getName() {

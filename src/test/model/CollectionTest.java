@@ -65,6 +65,6 @@ public class CollectionTest {
         collection.addItem(geoffrey);
         collection.addItem(leota);
 
-        assertEquals(collection.calculateTotalValue(), (geoffreyAverage + leotaAverage));
+        assertEquals(collection.calculateTotalValue(), Math.round((geoffreyAverage + leotaAverage)* 100.0) / 100.0);
     }
 }

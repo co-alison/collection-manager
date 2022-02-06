@@ -21,9 +21,10 @@ this passion to fellow collectors, or anyone who wants to start!
 
 # User Stories
 
-- As a user, I want to be able to add or remove an item to my collection.
+- 
+- As a user, I want to be able to add or remove an item to/from my collection.
 - As a user, I want to be able to view a list of collections or items.
 - As a user, I want to be able to select and update information of an item.
 - As a user, I want to be able to perform various functions on items such as:
-  - Calculating the current average market price, price trends, and the age of an item.
+  - Calculating the current average market price and price trend of an item.
   - Calculating the total value of a collection.

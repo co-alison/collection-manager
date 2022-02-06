@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// Collection application
 public class CollectionApp {
     private List<Collection> collectionList;
     private Scanner input;
 
+    // EFFECTS: runs the collection application
     public CollectionApp() {
         runCollection();
     }
 
+    // MODIFIES: this
+    // EFFECTS: processes user input
     private void runCollection() {
         boolean keepRunning = true;
         String command;
@@ -33,16 +37,26 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: initializes empty list of collections
+    private void init() {
+        collectionList = new ArrayList<>();
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
+    }
+
+    // EFFECTS: displays options for user command
     private void displayMenu() {
         System.out.println("\nWhat would you like to do today?");
         System.out.println("\tc -> create a new collection");
         System.out.println("\ta -> add a new item to collection");
         System.out.println("\tr -> remove item from collection");
         System.out.println("\tt -> calculate total value of collection");
-        System.out.println("\ts -> select and view item");
+        System.out.println("\tsc -> select and view collection");
+        System.out.println("\tsi -> select and view item");
         System.out.println("\tq -> quit");
     }
 
+    // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("c")) {
             createCollection();
@@ -59,6 +73,8 @@ public class CollectionApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a new collection and adds to collection list
     private void createCollection() {
         System.out.println("What is the name of your new collection?");
         String name = input.next();
@@ -68,6 +84,8 @@ public class CollectionApp {
         printCollections();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates new item to add to collection
     private void addItem() {
         if (isCollectionListEmpty()) {
             return;
@@ -91,6 +109,8 @@ public class CollectionApp {
         addItemToCollection(item);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds given item to a collection
     private void addItemToCollection(Item item) {
         System.out.println("Which collection do you want to add this item to?");
         printCollections();
@@ -102,9 +122,9 @@ public class CollectionApp {
                 System.out.println("Item added.");
             }
         }
-        // System.out.println("Collection not found.");
     }
 
+    // EFFECTS: chooses which collection the item will be removed from
     private void removeItem() {
         if (isCollectionListEmpty()) {
             return;
@@ -120,6 +140,8 @@ public class CollectionApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes item from given collection
     private void removeItemFromCollection(Collection c) {
         if (isCollectionEmpty(c)) {
             return;
@@ -137,6 +159,7 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: calculates total value of the collection
     private void doCalculateTotalValue() {
         if (isCollectionListEmpty()) {
             return;
@@ -152,6 +175,7 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: selects collection to view
     private void selectCollection() {
         if (isCollectionListEmpty()) {
             return;
@@ -166,9 +190,9 @@ public class CollectionApp {
                 selectItem(c);
             }
         }
-        // System.out.println("Collection not found.");
     }
 
+    // EFFECTS: selects item from collection
     private void selectItem(Collection c) {
         if (isCollectionEmpty(c)) {
             return;
@@ -182,15 +206,14 @@ public class CollectionApp {
                 displayItemFunctions(i);
             }
         }
-        //System.out.println("Item not found.");
     }
-    
+
+    // EFFECTS: display options for user command for item functions
     private void displayItemFunctions(Item i) {
         System.out.println("\nSelect an option: ");
         System.out.println("\tu -> update info");
         System.out.println("\tm -> calculate average market price");
         System.out.println("\tp -> calculate price trend");
-        System.out.println("\ta -> calculate age");
         System.out.println("\tc -> add comment");
         System.out.println("\tb -> go back");
         
@@ -198,7 +221,8 @@ public class CollectionApp {
         
         processItemCommand(command, i);
     }
-    
+
+    // EFFECTS: processes command for item functions
     private void processItemCommand(String c, Item i) {
         if (c.equals("u")) {
             updateItem(i);
@@ -206,8 +230,6 @@ public class CollectionApp {
             doCalculateAverageMarketPrice(i);
         } else if (c.equals("p")) {
             doCalculatePriceTrend(i);
-        } else if (c.equals("a")) {
-            doCalculateAge(i);
         } else if (c.equals("c")) {
             doAddComment(i);
         } else if (c.equals("b")) {
@@ -216,7 +238,8 @@ public class CollectionApp {
             System.out.println("Invalid selection.");
         }
     }
-    
+
+    // EFFECTS: displays options for user command for item update
     private void updateItem(Item i) {
         printCurrentInfo(i);
         System.out.println("\nWhat would you like to update?");
@@ -231,7 +254,8 @@ public class CollectionApp {
         String command = input.next();
         processUpdate(command, i);
     }
-    
+
+    // EFFECTS: processes user command for item update
     private void processUpdate(String c, Item i) {
         if (c.equals("n")) {
             updateName(i);
@@ -252,6 +276,8 @@ public class CollectionApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's category
     private void updateCategory(Item i) {
         System.out.println("Enter new category: ");
         String category = input.next();
@@ -259,6 +285,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's condition
     private void updateCondition(Item i) {
         System.out.println("\nSelect a condition: ");
         System.out.println("\tn -> new");
@@ -271,6 +299,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's release date
     private void updateReleaseDate(Item i) {
         System.out.println("Enter new release date (yyyy mm dd): ");
         String date = input.next();
@@ -278,6 +308,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's exclusive
     private void updateExclusive(Item i) {
         System.out.println("Enter new exclusive: ");
         String exclusive = input.next();
@@ -292,6 +324,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's item number
     private void updateItemNumber(Item i) {
         System.out.println("Enter new item number: ");
         Integer num = input.nextInt();
@@ -299,6 +333,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: updates item's name
     private void updateName(Item i) {
         System.out.println("Enter new name: ");
         String name = input.next();
@@ -306,6 +342,8 @@ public class CollectionApp {
         System.out.println("Updated.");
     }
 
+    // MODIFIES: this
+    // EFFECTS: calculates average market price and updates current market price of item
     private void doCalculateAverageMarketPrice(Item i) {
         List<Double> prices = new ArrayList<>();
         double p;
@@ -320,18 +358,16 @@ public class CollectionApp {
         System.out.println("$" + i.calculateAverageMarketPrice(prices));
     }
 
+    // EFFECTS: calculates price trend of item;
+    //          if current market price is not set, uses default value of 12.99
     private void doCalculatePriceTrend(Item i) {
         System.out.println("What was the original price of this item?");
         Double price = input.nextDouble();
         System.out.println(i.calculatePriceTrend(price) + "%");
     }
 
-    private void doCalculateAge(Item i) {
-        System.out.println("What is today's date (yyyy mm dd)?");
-        String date = input.next();
-        System.out.println(i.calculateAge(date));
-    }
-
+    // MODIFIES: this
+    // EFFECTS: adds comment to item's comments
     private void doAddComment(Item i) {
         System.out.println("Enter comment: ");
         String comment = input.next();
@@ -339,6 +375,7 @@ public class CollectionApp {
         System.out.println("Comments: " + i.getComments());
     }
 
+    // EFFECTS: displays item's information
     private void printCurrentInfo(Item i) {
         System.out.println("Name: " + i.getName());
         System.out.println("Item Number: " + i.getItemNumber());
@@ -351,6 +388,7 @@ public class CollectionApp {
         System.out.println("Comments: " + i.getComments() + " (Default comments: NA)");
     }
 
+    // EFFECTS: displays collections in collection list
     private void printCollections() {
         System.out.println("Your collections:");
         for (Collection c : collectionList) {
@@ -358,6 +396,7 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: displays items in collection
     private void printItems(Collection c) {
         System.out.println("Your items: ");
         for (Item i : c.getItems()) {
@@ -365,6 +404,7 @@ public class CollectionApp {
         }
     }
 
+    // EFFECTS: returns true if collection list is empty
     private boolean isCollectionListEmpty() {
         if (collectionList.size() == 0) {
             System.out.println("No collections added.");
@@ -373,17 +413,12 @@ public class CollectionApp {
         return false;
     }
 
+    // EFFECTS: returns true if collection is empty (no items)
     private boolean isCollectionEmpty(Collection c) {
         if (c.getItems().size() == 0) {
             System.out.println("No items added.");
             return true;
         }
         return false;
-    }
-
-    private void init() {
-        collectionList = new ArrayList<>();
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
     }
 }

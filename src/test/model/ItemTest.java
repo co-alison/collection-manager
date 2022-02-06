@@ -20,13 +20,19 @@ public class ItemTest {
 
     @Test
     public void constructorTest() {
+        funkoPop.setName("Alien");
         assertEquals("Alien", funkoPop.getName());
+        funkoPop.setItemNumber(48241);
         assertEquals(48241, funkoPop.getItemNumber());
+        funkoPop.setEdition("Glitter");
         assertEquals("Glitter", funkoPop.getEdition());
+        funkoPop.setExclusive("BoxLunch");
         assertEquals("BoxLunch", funkoPop.getExclusive());
+        funkoPop.setReleaseDate("2020 01 01");
         assertEquals("2020 01 01", funkoPop.getReleaseDate());
         assertEquals(12.99, funkoPop.getCurrentMarketPrice());
         assertEquals("NA", funkoPop.getCondition());
+        funkoPop.setCategory("Toy Story");
         assertEquals("Toy Story", funkoPop.getCategory());
         assertEquals("NA", funkoPop.getComments().get(0));
     }
@@ -39,7 +45,7 @@ public class ItemTest {
         prices.add(49.45);
         funkoPop.calculateAverageMarketPrice(prices);
         assertEquals(funkoPop.getCurrentMarketPrice(),
-                (95.15 + 32.88 + 49.45) / 3);
+                Math.round(((95.15 + 32.88 + 49.45) / 3) * 100.0) / 100.0);
     }
 
     @Test
@@ -54,12 +60,6 @@ public class ItemTest {
     }
 
     @Test
-    public void calculateAgeTest() {
-        funkoPop.setReleaseDate("2020 01 01");
-        assertEquals("2 Days, 1 Months, 2 Years Old", funkoPop.calculateAge("2022 02 03"));
-    }
-
-    @Test
     public void addCommentTest() {
         String comment1 = "Box has small dent.";
         funkoPop.addComment(comment1);
@@ -70,6 +70,24 @@ public class ItemTest {
         funkoPop.addComment(comment2);
         assertEquals(2, funkoPop.getComments().size());
         assertEquals(comment2, funkoPop.getComments().get(1));
+    }
+
+    @Test
+    public void setConditionTest() {
+        funkoPop.setCondition("n");
+        assertEquals(funkoPop.getCondition(), "New");
+
+        funkoPop.setCondition("m");
+        assertEquals(funkoPop.getCondition(), "Mint Condition");
+
+        funkoPop.setCondition("g");
+        assertEquals(funkoPop.getCondition(), "Good");
+
+        funkoPop.setCondition("f");
+        assertEquals(funkoPop.getCondition(), "Fair");
+
+        funkoPop.setCondition("p");
+        assertEquals(funkoPop.getCondition(), "Poor");
     }
 
 
