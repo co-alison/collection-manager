@@ -47,21 +47,24 @@ public class Item {
 
     // REQUIRES: prices has at least one price in list
     // MODIFIES: this
-    // EFFECTS: sets currentMarketPrice to the average of prices given
+    // EFFECTS: sets currentMarketPrice to the average of prices given, rounds average to 2 decimal places
     public Double calculateAverageMarketPrice(List<Double> prices) {
         Double sum = 0.0;
         for (Double p : prices) {
             sum += p;
         }
         Double average = sum / prices.size();
+        average = Math.round(average * 100.0) / 100.0;
         this.currentMarketPrice = average;
         return average;
     }
 
     // REQUIRES: item has a current market price
-    // EFFECTS: calculates overall price trend from given price (percent increase or decrease)
+    // EFFECTS: calculates overall price trend from given price (percent increase or decrease),
+    // rounds to 2 decimal places
     public Double calculatePriceTrend(Double originalPrice) {
         Double percentChange = ((currentMarketPrice - originalPrice) / originalPrice) * 100;
+        percentChange = Math.round(percentChange * 100.0) / 100.0;
         return percentChange;
     }
 
@@ -84,12 +87,10 @@ public class Item {
 
     // REQUIRES: comment is not an empty string
     // MODIFIES: this
-    // EFFECTS:
+    // EFFECTS: adds given comment to comments
     public void addComment(String comment) {
         comments.add(comment);
     }
-
-    // TODO: add setters to update fields
 
     public void setName(String name) {
         this.name = name;
@@ -99,7 +100,6 @@ public class Item {
         this.itemNumber = itemNumber;
     }
 
-    // TODO:
     // EFFECTS: sets the condition of item to be new, mint condition, good, fair, or poor
     public void setCondition(String c) {
         if (c.equals("n")) {

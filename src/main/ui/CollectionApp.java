@@ -33,24 +33,30 @@ public class CollectionApp {
         }
     }
 
+    private void displayMenu() {
+        System.out.println("\nWhat would you like to do today?");
+        System.out.println("\tc -> create a new collection");
+        System.out.println("\ta -> add a new item to collection");
+        System.out.println("\tr -> remove item from collection");
+        System.out.println("\tt -> calculate total value of collection");
+        System.out.println("\ts -> select and view item");
+        System.out.println("\tq -> quit");
+    }
+
     private void processCommand(String command) {
         if (command.equals("c")) {
             createCollection();
         } else if (command.equals("a")) {
             addItem();
+        } else if (command.equals("r")) {
+            removeItem();
+        } else if (command.equals("t")) {
+            doCalculateTotalValue();
         } else if (command.equals("s")) {
             selectCollection();
         } else {
             System.out.println("Invalid selection");
         }
-    }
-
-    private void displayMenu() {
-        System.out.println("\nWhat would you like to do today?");
-        System.out.println("\tc -> create a new collection");
-        System.out.println("\ta -> add a new item to collection");
-        System.out.println("\ts -> select and view item");
-        System.out.println("\tq -> quit");
     }
 
     private void createCollection() {
@@ -63,6 +69,9 @@ public class CollectionApp {
     }
 
     private void addItem() {
+        if (isCollectionListEmpty()) {
+            return;
+        }
         System.out.println("Enter the following information about your item. Use NA for blank values.");
         System.out.println("Name: ");
         String name = input.next();
@@ -90,13 +99,63 @@ public class CollectionApp {
         for (Collection c : collectionList) {
             if (c.getName().equals(collection)) {
                 c.addItem(item);
-                System.out.println("Item added.");;
+                System.out.println("Item added.");
             }
         }
         // System.out.println("Collection not found.");
     }
 
+    private void removeItem() {
+        if (isCollectionListEmpty()) {
+            return;
+        }
+        System.out.println("Which collection do you want to remove from?");
+        printCollections();
+        String collection = input.next();
+
+        for (Collection c : collectionList) {
+            if (c.getName().equals(collection)) {
+                removeItemFromCollection(c);
+            }
+        }
+    }
+
+    private void removeItemFromCollection(Collection c) {
+        if (isCollectionEmpty(c)) {
+            return;
+        }
+        System.out.println("Which item do you want to remove?");
+        printItems(c);
+        String item = input.next();
+
+        for (Item i : c.getItems()) {
+            if (i.getName().equals(item)) {
+                c.removeItem(i);
+                System.out.println("Item removed.");
+                return;
+            }
+        }
+    }
+
+    private void doCalculateTotalValue() {
+        if (isCollectionListEmpty()) {
+            return;
+        }
+        System.out.println("Which collection do you want to calculate the total value of?");
+        printCollections();
+        String collection = input.next();
+
+        for (Collection c : collectionList) {
+            if (c.getName().equals(collection)) {
+                System.out.println("Total Value: $" + c.calculateTotalValue());
+            }
+        }
+    }
+
     private void selectCollection() {
+        if (isCollectionListEmpty()) {
+            return;
+        }
         System.out.println("Which collection do you want to view?");
         printCollections();
         String collection = input.next();
@@ -111,6 +170,9 @@ public class CollectionApp {
     }
 
     private void selectItem(Collection c) {
+        if (isCollectionEmpty(c)) {
+            return;
+        }
         System.out.println("Which item do you want to view?");
         String item = input.next();
 
@@ -130,6 +192,7 @@ public class CollectionApp {
         System.out.println("\tp -> calculate price trend");
         System.out.println("\ta -> calculate age");
         System.out.println("\tc -> add comment");
+        System.out.println("\tb -> go back");
         
         String command = input.next();
         
@@ -147,6 +210,8 @@ public class CollectionApp {
             doCalculateAge(i);
         } else if (c.equals("c")) {
             doAddComment(i);
+        } else if (c.equals("b")) {
+            return;
         } else {
             System.out.println("Invalid selection.");
         }
@@ -287,17 +352,33 @@ public class CollectionApp {
     }
 
     private void printCollections() {
-        System.out.println("Available collections:");
+        System.out.println("Your collections:");
         for (Collection c : collectionList) {
             System.out.println("\t" + c.getName());
         }
     }
 
     private void printItems(Collection c) {
-        System.out.println("Available items: ");
+        System.out.println("Your items: ");
         for (Item i : c.getItems()) {
             System.out.println("\t" + i.getName());
         }
+    }
+
+    private boolean isCollectionListEmpty() {
+        if (collectionList.size() == 0) {
+            System.out.println("No collections added.");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isCollectionEmpty(Collection c) {
+        if (c.getItems().size() == 0) {
+            System.out.println("No items added.");
+            return true;
+        }
+        return false;
     }
 
     private void init() {

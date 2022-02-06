@@ -34,11 +34,11 @@ public class Collection {
         for (Item i : items) {
             totalValue += i.getCurrentMarketPrice();
         }
+        totalValue = Math.round(totalValue * 100.0) / 100.0;
         return totalValue;
     }
 
-    // TODO: viewItem() and viewCollection() ?
-
+    // TODO: searchCollectionByFieldKeyword
     // REQUIRES: searchBy is a field in Item, keyword matches field, cannot search comments
     // EFFECTS: returns list of item that match searchBy
     public List<Item> searchCollectionByFieldKeyword(String searchBy, String keyword) {
