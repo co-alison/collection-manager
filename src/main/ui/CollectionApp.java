@@ -51,8 +51,7 @@ public class CollectionApp {
         System.out.println("\ta -> add a new item to collection");
         System.out.println("\tr -> remove item from collection");
         System.out.println("\tt -> calculate total value of collection");
-        System.out.println("\tsc -> select and view collection");
-        System.out.println("\tsi -> select and view item");
+        System.out.println("\ts -> select and view item/collection");
         System.out.println("\tq -> quit");
     }
 
@@ -180,14 +179,20 @@ public class CollectionApp {
         if (isCollectionListEmpty()) {
             return;
         }
-        System.out.println("Which collection do you want to view?");
+        System.out.println("Which collection do you want to view? (Enter b to go back)");
         printCollections();
         String collection = input.next();
 
         for (Collection c : collectionList) {
             if (c.getName().equals(collection)) {
-                printItems(c);
-                selectItem(c);
+                if (isCollectionEmpty(c)) {
+                    return;
+                } else {
+                    printItems(c);
+                    selectItem(c);
+                }
+            } else if (collection.equals("b")) {
+                return;
             }
         }
     }
@@ -355,7 +360,7 @@ public class CollectionApp {
             p = input.nextDouble();
             prices.add(p);
         }
-        System.out.println("$" + i.calculateAverageMarketPrice(prices));
+        System.out.println("Average Market Price: $" + i.calculateAverageMarketPrice(prices));
     }
 
     // EFFECTS: calculates price trend of item;
