@@ -17,15 +17,15 @@ public class Item {
     private String category;
     private List<String> comments;
 
-    private final Double defaultPrice = 12.99;
-    private final String defaultCondition = "NA";
+    private static final Double DEFAULT_PRICE = 12.99;
+    private static final String DEFAULT_CONDITION = "NA";
 
     // REQUIRES:
     // EFFECTS: name of item is set to name; item number is set to itemNumber;
     //          edition of item is set to edition; type of exclusive of item is set to exclusive;
     //          release date of item is set to date, yyyy MM dd;
-    //          current market price is set to defaultPrice;
-    //          condition of item is set to defaultCondition;
+    //          current market price is set to DEFAULT_PRICE;
+    //          condition of item is set to DEFAULT_CONDITION;
     //          category of item is set to category;
     //          comments is an empty list;
 
@@ -36,8 +36,8 @@ public class Item {
         this.edition = edition;
         this.exclusive = exclusive;
         this.releaseDate = date;
-        this.currentMarketPrice = defaultPrice;
-        this.condition = defaultCondition;
+        this.currentMarketPrice = DEFAULT_PRICE;
+        this.condition = DEFAULT_CONDITION;
         this.category = category;
         this.comments = new ArrayList<>();
     }
@@ -92,7 +92,7 @@ public class Item {
         } else if (c.equals("p")) {
             condition = "Poor";
         } else {
-            condition = defaultCondition;
+            condition = DEFAULT_CONDITION;
         }
     }
 
