@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-// represents a list of items
+// represents a collection of Items
 public class Collection {
 
     private List<Item> items;
@@ -12,7 +12,7 @@ public class Collection {
     // EFFECTS: creates a new collection with a name, and no items
     public Collection(String name) {
         this.name = name;
-        this.items = new ArrayList<Item>();
+        this.items = new ArrayList<>();
     }
 
     // MODIFIES: this

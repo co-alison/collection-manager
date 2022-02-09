@@ -17,6 +17,7 @@ public class CollectionApp {
         runCollection();
     }
 
+    // code modified from TellerApp
     // MODIFIES: this
     // EFFECTS: processes user input
     private void runCollection() {
@@ -37,6 +38,7 @@ public class CollectionApp {
         }
     }
 
+    // code modified from TellerApp
     // EFFECTS: initializes empty list of collections
     private void init() {
         collectionList = new ArrayList<>();
@@ -44,6 +46,7 @@ public class CollectionApp {
         input.useDelimiter("\n");
     }
 
+    // code modified from TellerApp
     // EFFECTS: displays options for user command
     private void displayMenu() {
         System.out.println("\nWhat would you like to do today?");
@@ -55,6 +58,7 @@ public class CollectionApp {
         System.out.println("\tq -> quit");
     }
 
+    // code modified from TellerApp
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("c")) {

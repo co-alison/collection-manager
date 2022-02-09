@@ -64,6 +64,8 @@ public class Item {
         return percentChange;
     }
 
+    // setters
+
     // REQUIRES: comment is not an empty string
     // MODIFIES: this
     // EFFECTS: adds given comment to comments
@@ -104,7 +106,7 @@ public class Item {
         this.exclusive = exclusive;
     }
 
-    // REQUIRES: date is in format "yyyy MM dd"
+    // REQUIRES: date is in format "yyyy mm dd"
     public void setReleaseDate(String date) {
         this.releaseDate = date;
     }
@@ -112,6 +114,7 @@ public class Item {
     public void setCategory(String category) {
         this.category = category;
     }
+
     // getters
 
     public String getName() {
@@ -146,6 +149,7 @@ public class Item {
         return category;
     }
 
+    // EFFECTS: if list of comments is empty, return comments with "NA" as only item, otherwise return list of comments
     public List<String> getComments() {
         List<String> emptyList = new ArrayList<>();
         emptyList.add("NA");
