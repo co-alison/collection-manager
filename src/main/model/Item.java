@@ -18,7 +18,7 @@ public class Item {
     private List<String> comments;
 
     private static final Double DEFAULT_PRICE = 12.99;
-    private static final String DEFAULT_CONDITION = "NA";
+    private static final String DEFAULT_CONDITION = "New";
 
     // REQUIRES:
     // EFFECTS: name of item is set to name; item number is set to itemNumber;

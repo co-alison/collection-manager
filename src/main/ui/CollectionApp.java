@@ -132,13 +132,15 @@ public class CollectionApp {
         if (isCollectionListEmpty()) {
             return;
         }
-        System.out.println("Which collection do you want to remove from?");
+        System.out.println("Which collection do you want to remove from? (enter b to go back)");
         printCollections();
         String collection = input.next();
 
         for (Collection c : collectionList) {
             if (c.getName().equals(collection)) {
                 removeItemFromCollection(c);
+            } else if (collection.equals("b")) {
+                return;
             }
         }
     }
@@ -149,7 +151,7 @@ public class CollectionApp {
         if (isCollectionEmpty(c)) {
             return;
         }
-        System.out.println("Which item do you want to remove?");
+        System.out.println("Which item do you want to remove? (enter b to go back)");
         printItems(c);
         String item = input.next();
 
@@ -157,6 +159,8 @@ public class CollectionApp {
             if (i.getName().equals(item)) {
                 c.removeItem(i);
                 System.out.println("Item removed.");
+                return;
+            } else if (item.equals("b")) {
                 return;
             }
         }
@@ -167,13 +171,15 @@ public class CollectionApp {
         if (isCollectionListEmpty()) {
             return;
         }
-        System.out.println("Which collection do you want to calculate the total value of?");
+        System.out.println("Which collection do you want to calculate the total value of? (enter b to go back)");
         printCollections();
         String collection = input.next();
 
         for (Collection c : collectionList) {
             if (c.getName().equals(collection)) {
                 System.out.println("Total Value: $" + c.calculateTotalValue());
+            } else if (collection.equals("b")) {
+                return;
             }
         }
     }
@@ -183,7 +189,7 @@ public class CollectionApp {
         if (isCollectionListEmpty()) {
             return;
         }
-        System.out.println("Which collection do you want to view? (Enter b to go back)");
+        System.out.println("Which collection do you want to view? (enter b to go back)");
         printCollections();
         String collection = input.next();
 
@@ -206,13 +212,15 @@ public class CollectionApp {
         if (isCollectionEmpty(c)) {
             return;
         }
-        System.out.println("Which item do you want to view?");
+        System.out.println("Which item do you want to view? (enter b to go back)");
         String item = input.next();
 
         for (Item i : c.getItems()) {
             if (i.getName().equals(item)) {
                 printCurrentInfo(i);
                 displayItemFunctions(i);
+            } else if (item.equals("b")) {
+                return;
             }
         }
     }
@@ -392,7 +400,7 @@ public class CollectionApp {
         System.out.println("Exclusive: " + i.getExclusive());
         System.out.println("Release Date: " + i.getReleaseDate());
         System.out.println("Current Market Price: $" + i.getCurrentMarketPrice() + " (Default price: 12.99)");
-        System.out.println("Condition: " + i.getCondition() + " (Default condition: NA)");
+        System.out.println("Condition: " + i.getCondition() + " (Default condition: New)");
         System.out.println("Category: " + i.getCategory());
         System.out.println("Comments: " + i.getComments() + " (Default comments: NA)");
     }
