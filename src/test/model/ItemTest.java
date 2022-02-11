@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ItemTest {
     private Item funkoPop;
-    private String defaultCondition = "NA";
+    private String defaultCondition = "New";
 
     @BeforeEach
     void setup() {
@@ -32,7 +32,7 @@ public class ItemTest {
         funkoPop.setReleaseDate("2020 01 01");
         assertEquals("2020 01 01", funkoPop.getReleaseDate());
         assertEquals(12.99, funkoPop.getCurrentMarketPrice());
-        assertEquals("New", funkoPop.getCondition());
+        assertEquals(defaultCondition, funkoPop.getCondition());
         funkoPop.setCategory("Toy Story");
         assertEquals("Toy Story", funkoPop.getCategory());
         assertEquals("NA", funkoPop.getComments().get(0));
@@ -91,7 +91,7 @@ public class ItemTest {
         assertEquals(funkoPop.getCondition(), "Poor");
 
         funkoPop.setCondition("x");
-        assertEquals(funkoPop.getCondition(), "New");
+        assertEquals(funkoPop.getCondition(), defaultCondition);
     }
 
 

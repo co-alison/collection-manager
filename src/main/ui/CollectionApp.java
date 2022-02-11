@@ -392,7 +392,7 @@ public class CollectionApp {
         System.out.println("Exclusive: " + i.getExclusive());
         System.out.println("Release Date: " + i.getReleaseDate());
         System.out.println("Current Market Price: $" + i.getCurrentMarketPrice() + " (Default price: 12.99)");
-        System.out.println("Condition: " + i.getCondition() + " (Default condition: NA)");
+        System.out.println("Condition: " + i.getCondition() + " (Default condition: New)");
         System.out.println("Category: " + i.getCategory());
         System.out.println("Comments: " + i.getComments() + " (Default comments: NA)");
     }
