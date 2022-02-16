@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // represents a collection of Items
-public class Collection {
+public class Collection implements Writable {
 
     private List<Item> items;
     private String name;
@@ -46,5 +50,23 @@ public class Collection {
 
     public List<Item> getItems() {
         return items;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("items", itemsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns items in this collection as a JSON array
+    private JSONArray itemsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Item i : items) {
+            jsonArray.put(i.toJson());
+        }
+
+        return jsonArray;
     }
 }

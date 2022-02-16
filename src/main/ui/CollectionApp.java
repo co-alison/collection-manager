@@ -2,18 +2,25 @@ package ui;
 
 import model.Collection;
 import model.Item;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 // Collection application
 public class CollectionApp {
+    private static final String JSON_STORE = "./data/collection.json";
     private List<Collection> collectionList;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the collection application
-    public CollectionApp() {
+    public CollectionApp() throws FileNotFoundException {
         runCollection();
     }
 
@@ -31,9 +38,44 @@ public class CollectionApp {
             command = input.next();
 
             if (command.equals("q")) {
+                askSave();
                 keepRunning = false;
             } else {
                 processCommand(command);
+            }
+        }
+    }
+
+    // EFFECTS: prompts user to save
+    private void askSave() {
+        System.out.println("\nDo you want to save your collections to file or quit?");
+        System.out.println("\ts -> save");
+        System.out.println("\tq -> quit");
+        String command = input.next();
+
+        if (command.equals("s")) {
+            saveCollection();
+        } else {
+            return;
+        }
+    }
+
+    // EFFECTS: saves chosen collection to file
+    private void saveCollection() {
+        System.out.println("Which collection do you want to save?");
+        printCollections();
+        String collection = input.next();
+
+        for (Collection c : collectionList) {
+            if (c.getName().equals(collection)) {
+                try {
+                    jsonWriter.open();
+                    jsonWriter.write(c);
+                    jsonWriter.close();
+                    System.out.println("Saved " + collection + " to " + JSON_STORE);
+                } catch (FileNotFoundException e) {
+                    System.out.println("Unable to write to file: " + JSON_STORE);
+                }
             }
         }
     }
@@ -44,12 +86,15 @@ public class CollectionApp {
         collectionList = new ArrayList<>();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // code modified from TellerApp
     // EFFECTS: displays options for user command
     private void displayMenu() {
         System.out.println("\nWhat would you like to do today?");
+        System.out.println("\tl -> load collection from file");
         System.out.println("\tc -> create a new collection");
         System.out.println("\ta -> add a new item to collection");
         System.out.println("\tr -> remove item from collection");
@@ -61,7 +106,9 @@ public class CollectionApp {
     // code modified from TellerApp
     // EFFECTS: processes user command
     private void processCommand(String command) {
-        if (command.equals("c")) {
+        if (command.equals("l")) {
+            loadCollection();
+        } else if (command.equals("c")) {
             createCollection();
         } else if (command.equals("a")) {
             addItem();
@@ -73,6 +120,16 @@ public class CollectionApp {
             selectCollection();
         } else {
             System.out.println("Invalid selection");
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads collection from file
+    private void loadCollection() {
+        try {
+            Collection collection = jsonReader.read();
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 

@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.*;
 
 // represents a single item in a collection that has a name, item number,
 // release date, current market price,
 // exclusivity, edition, condition, category, and comments (optional)
-public class Item {
+public class Item implements Writable {
 
     private String name;
     private Integer itemNumber;
@@ -115,6 +118,14 @@ public class Item {
         this.category = category;
     }
 
+    public void setCurrentMarketPrice(Double price) {
+        this.currentMarketPrice = price;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
     // getters
 
     public String getName() {
@@ -158,5 +169,20 @@ public class Item {
         } else {
             return comments;
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("item number", itemNumber);
+        json.put("edition", edition);
+        json.put("exclusive", exclusive);
+        json.put("release date", releaseDate);
+        json.put("current market price", currentMarketPrice);
+        json.put("condition", condition);
+        json.put("category", category);
+        json.put("comments", comments);
+        return json;
     }
 }
