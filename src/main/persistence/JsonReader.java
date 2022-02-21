@@ -2,6 +2,7 @@ package persistence;
 
 import model.Collection;
 import model.Item;
+import model.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -23,10 +25,10 @@ public class JsonReader {
 
     // EFFECTS: reads workroom from file and returns it;
     // throws IOException if an error occurs reading data from file
-    public Collection read() throws IOException {
+    public User read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseCollection(jsonObject);
+        return parseUser(jsonObject);
     }
 
     // EFFECTS: reads source file as string and returns it
@@ -38,6 +40,29 @@ public class JsonReader {
         }
 
         return contentBuilder.toString();
+    }
+
+    private User parseUser(JSONObject jsonObject) {
+        User user = new User();
+        addCollections(user, jsonObject);
+        return user;
+    }
+
+    private void addCollections(User user, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("collections");
+        for (Object json : jsonArray) {
+            JSONObject nextCollection = (JSONObject) json;
+            addCollection(user, nextCollection);
+        }
+    }
+
+    private Collection addCollection(User user, JSONObject jsonObject) {
+        String name = jsonObject.getString("name");
+        Collection col = new Collection(name);
+        user.addCollection(col);
+        addItems(col, jsonObject);
+        return col;
+
     }
 
     // EFFECTS: parses collection from JSON object and returns it
@@ -75,5 +100,7 @@ public class JsonReader {
         condition = condition.substring(0, 1).toLowerCase(Locale.ROOT);
         item.setCondition(condition);
         // item.setComments(comments);
+
+        col.addItem(item);
     }
 }

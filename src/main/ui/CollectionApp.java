@@ -2,6 +2,7 @@ package ui;
 
 import model.Collection;
 import model.Item;
+import model.User;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -14,7 +15,7 @@ import java.util.Scanner;
 // Collection application
 public class CollectionApp {
     private static final String JSON_STORE = "./data/collection.json";
-    private List<Collection> collectionList;
+    private User user;
     private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -62,28 +63,20 @@ public class CollectionApp {
 
     // EFFECTS: saves chosen collection to file
     private void saveCollection() {
-        System.out.println("Which collection do you want to save?");
-        printCollections();
-        String collection = input.next();
-
-        for (Collection c : collectionList) {
-            if (c.getName().equals(collection)) {
-                try {
-                    jsonWriter.open();
-                    jsonWriter.write(c);
-                    jsonWriter.close();
-                    System.out.println("Saved " + collection + " to " + JSON_STORE);
-                } catch (FileNotFoundException e) {
-                    System.out.println("Unable to write to file: " + JSON_STORE);
-                }
-            }
+        try {
+            jsonWriter.open();
+            jsonWriter.write(user);
+            jsonWriter.close();
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
         }
     }
 
     // code modified from TellerApp
     // EFFECTS: initializes empty list of collections
     private void init() {
-        collectionList = new ArrayList<>();
+        user = new User();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -127,7 +120,8 @@ public class CollectionApp {
     // EFFECTS: loads collection from file
     private void loadCollection() {
         try {
-            Collection collection = jsonReader.read();
+            user = jsonReader.read();
+            System.out.println("Loaded from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
@@ -140,7 +134,7 @@ public class CollectionApp {
         String name = input.next();
 
         Collection collection = new Collection(name);
-        collectionList.add(collection);
+        user.addCollection(collection);
         printCollections();
     }
 
@@ -176,7 +170,7 @@ public class CollectionApp {
         printCollections();
         String collection = input.next();
 
-        for (Collection c : collectionList) {
+        for (Collection c : user.getCollections()) {
             if (c.getName().equals(collection)) {
                 c.addItem(item);
                 System.out.println("Item added.");
@@ -193,7 +187,7 @@ public class CollectionApp {
         printCollections();
         String collection = input.next();
 
-        for (Collection c : collectionList) {
+        for (Collection c : user.getCollections()) {
             if (c.getName().equals(collection)) {
                 removeItemFromCollection(c);
             }
@@ -228,7 +222,7 @@ public class CollectionApp {
         printCollections();
         String collection = input.next();
 
-        for (Collection c : collectionList) {
+        for (Collection c : user.getCollections()) {
             if (c.getName().equals(collection)) {
                 System.out.println("Total Value: $" + c.calculateTotalValue());
             }
@@ -244,7 +238,7 @@ public class CollectionApp {
         printCollections();
         String collection = input.next();
 
-        for (Collection c : collectionList) {
+        for (Collection c : user.getCollections()) {
             if (c.getName().equals(collection)) {
                 if (isCollectionEmpty(c)) {
                     return;
@@ -282,9 +276,9 @@ public class CollectionApp {
         System.out.println("\tp -> calculate price trend");
         System.out.println("\tc -> add comment");
         System.out.println("\tb -> go back");
-        
+
         String command = input.next();
-        
+
         processItemCommand(command, i);
     }
 
@@ -316,7 +310,7 @@ public class CollectionApp {
         System.out.println("\td -> release date");
         System.out.println("\tco -> condition");
         System.out.println("\tca -> category");
-        
+
         String command = input.next();
         processUpdate(command, i);
     }
@@ -457,7 +451,7 @@ public class CollectionApp {
     // EFFECTS: displays collections in collection list
     private void printCollections() {
         System.out.println("Your collections:");
-        for (Collection c : collectionList) {
+        for (Collection c : user.getCollections()) {
             System.out.println("\t" + c.getName());
         }
     }
@@ -472,7 +466,7 @@ public class CollectionApp {
 
     // EFFECTS: returns true if collection list is empty
     private boolean isCollectionListEmpty() {
-        if (collectionList.size() == 0) {
+        if (user.getCollections().size() == 0) {
             System.out.println("No collections added.");
             return true;
         }
