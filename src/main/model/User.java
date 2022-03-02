@@ -7,13 +7,15 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
-// Represents a user have a list of collections
+// Represents a user that has a list of collections
 public class User implements Writable {
 
     private List<Collection> collections;
+    private String name;
 
-    // constructs a user with an empty list of collections
-    public User() {
+    // constructs a user with an empty list of collections, and a name
+    public User(String name) {
+        this.name = name;
         this.collections = new ArrayList<>();
     }
 
@@ -29,9 +31,14 @@ public class User implements Writable {
         return collections;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
+        json.put("name", name);
         json.put("collections", collectionsToJson());
         return json;
     }

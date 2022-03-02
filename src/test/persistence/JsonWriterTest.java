@@ -17,7 +17,7 @@ public class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            User user = new User();
+            User user = new User("Alison");
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -29,7 +29,7 @@ public class JsonWriterTest extends JsonTest {
     @Test
     void testWriterNoCollection() {
         try {
-            User user = new User();
+            User user = new User("Alison");
             JsonWriter writer = new JsonWriter("./data/testWriterNoCollection.json");
             writer.open();
             writer.write(user);
@@ -37,6 +37,7 @@ public class JsonWriterTest extends JsonTest {
 
             JsonReader reader = new JsonReader("./data/testWriterNoCollection.json");
             user = reader.read();
+            assertEquals("Alison", user.getName());
             assertEquals(0, user.getCollections().size());
         } catch (IOException e) {
             fail("Unexpected IOException");
@@ -46,7 +47,7 @@ public class JsonWriterTest extends JsonTest {
     @Test
     void testWriterGeneralUser() {
         try {
-            User user = new User();
+            User user = new User("Alison");
             Collection collection = new Collection("Funko Pop!");
             user.addCollection(collection);
             Item item1 = new Item("Alien", 525, "Glitter", "BoxLunch", "2020 01 01", "Toy Story");
@@ -60,6 +61,7 @@ public class JsonWriterTest extends JsonTest {
 
             JsonReader reader = new JsonReader("./data/testWriterGeneralUser.json");
             user = reader.read();
+            assertEquals("Alison", user.getName());
             List<Collection> collections = user.getCollections();
             assertEquals(collections.size(), 1);
             Collection funko = collections.get(0);

@@ -74,13 +74,16 @@ public class CollectionApp {
     }
 
     // code modified from TellerApp
-    // EFFECTS: initializes empty list of collections
+    // EFFECTS: initializes new user
     private void init() {
-        user = new User();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+
+        System.out.println("What is your name?");
+        String name = input.next();
+        user = new User(name);
     }
 
     // code modified from TellerApp
@@ -274,7 +277,6 @@ public class CollectionApp {
         System.out.println("\tu -> update info");
         System.out.println("\tm -> calculate average market price");
         System.out.println("\tp -> calculate price trend");
-        System.out.println("\tc -> add comment");
         System.out.println("\tb -> go back");
 
         String command = input.next();
@@ -290,8 +292,6 @@ public class CollectionApp {
             doCalculateAverageMarketPrice(i);
         } else if (c.equals("p")) {
             doCalculatePriceTrend(i);
-        } else if (c.equals("c")) {
-            doAddComment(i);
         } else if (c.equals("b")) {
             return;
         } else {
@@ -426,15 +426,6 @@ public class CollectionApp {
         System.out.println(i.calculatePriceTrend(price) + "%");
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds comment to item's comments
-    private void doAddComment(Item i) {
-        System.out.println("Enter comment: ");
-        String comment = input.next();
-        i.addComment(comment);
-        System.out.println("Comments: " + i.getComments());
-    }
-
     // EFFECTS: displays item's information
     private void printCurrentInfo(Item i) {
         System.out.println("Name: " + i.getName());
@@ -445,7 +436,6 @@ public class CollectionApp {
         System.out.println("Current Market Price: $" + i.getCurrentMarketPrice() + " (Default price: 12.99)");
         System.out.println("Condition: " + i.getCondition() + " (Default condition: New)");
         System.out.println("Category: " + i.getCategory());
-        System.out.println("Comments: " + i.getComments() + " (Default comments: NA)");
     }
 
     // EFFECTS: displays collections in collection list

@@ -43,7 +43,8 @@ public class JsonReader {
     }
 
     private User parseUser(JSONObject jsonObject) {
-        User user = new User();
+        String name = jsonObject.getString("name");
+        User user = new User(name);
         addCollections(user, jsonObject);
         return user;
     }
@@ -63,14 +64,6 @@ public class JsonReader {
         addItems(col, jsonObject);
         return col;
 
-    }
-
-    // EFFECTS: parses collection from JSON object and returns it
-    private Collection parseCollection(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        Collection col = new Collection(name);
-        addItems(col, jsonObject);
-        return col;
     }
 
     // MODIFIES: col
@@ -94,12 +87,10 @@ public class JsonReader {
         Double currentMarketPrice = jsonObject.getDouble("current market price");
         String condition = jsonObject.getString("condition");
         String category = jsonObject.getString("category");
-        // List<String> comments = jsonObject.get("comments");
         Item item = new Item(name, itemNumber, edition, exclusive, releaseDate, category);
         item.setCurrentMarketPrice(currentMarketPrice);
         condition = condition.substring(0, 1).toLowerCase(Locale.ROOT);
         item.setCondition(condition);
-        // item.setComments(comments);
 
         col.addItem(item);
     }

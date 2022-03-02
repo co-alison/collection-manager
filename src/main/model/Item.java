@@ -18,7 +18,6 @@ public class Item implements Writable {
     private Double currentMarketPrice;
     private String condition;
     private String category;
-    private List<String> comments;
 
     private static final Double DEFAULT_PRICE = 12.99;
     private static final String DEFAULT_CONDITION = "New";
@@ -30,7 +29,6 @@ public class Item implements Writable {
     //          current market price is set to DEFAULT_PRICE;
     //          condition of item is set to DEFAULT_CONDITION;
     //          category of item is set to category;
-    //          comments is an empty list;
 
     public Item(String name, Integer itemNumber, String edition,
                 String exclusive, String date, String category) {
@@ -42,7 +40,6 @@ public class Item implements Writable {
         this.currentMarketPrice = DEFAULT_PRICE;
         this.condition = DEFAULT_CONDITION;
         this.category = category;
-        this.comments = new ArrayList<>();
     }
 
     // REQUIRES: prices has at least one price in list
@@ -68,13 +65,6 @@ public class Item implements Writable {
     }
 
     // setters
-
-    // REQUIRES: comment is not an empty string
-    // MODIFIES: this
-    // EFFECTS: adds given comment to comments
-    public void addComment(String comment) {
-        comments.add(comment);
-    }
 
     public void setName(String name) {
         this.name = name;
@@ -122,10 +112,6 @@ public class Item implements Writable {
         this.currentMarketPrice = price;
     }
 
-    public void setComments(List<String> comments) {
-        this.comments = comments;
-    }
-
     // getters
 
     public String getName() {
@@ -160,16 +146,6 @@ public class Item implements Writable {
         return category;
     }
 
-    // EFFECTS: if list of comments is empty, return comments with "NA" as only item, otherwise return list of comments
-    public List<String> getComments() {
-        List<String> emptyList = new ArrayList<>();
-        emptyList.add("NA");
-        if (comments.size() == 0) {
-            return emptyList;
-        } else {
-            return comments;
-        }
-    }
 
     @Override
     public JSONObject toJson() {
@@ -182,7 +158,6 @@ public class Item implements Writable {
         json.put("current market price", currentMarketPrice);
         json.put("condition", condition);
         json.put("category", category);
-        json.put("comments", comments);
         return json;
     }
 }

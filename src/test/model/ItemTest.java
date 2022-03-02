@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +34,6 @@ public class ItemTest {
         assertEquals(defaultCondition, funkoPop.getCondition());
         funkoPop.setCategory("Toy Story");
         assertEquals("Toy Story", funkoPop.getCategory());
-        assertEquals("NA", funkoPop.getComments().get(0));
     }
 
     @Test
@@ -58,19 +56,6 @@ public class ItemTest {
         funkoPop.calculateAverageMarketPrice(prices);
         assertEquals(funkoPop.calculatePriceTrend(15.00),
                 ((funkoPop.getCurrentMarketPrice() - 15.00) / 15.00) * 100);
-    }
-
-    @Test
-    public void addCommentTest() {
-        String comment1 = "Box has small dent.";
-        funkoPop.addComment(comment1);
-        assertEquals(1, funkoPop.getComments().size());
-        assertEquals(comment1, funkoPop.getComments().get(0));
-
-        String comment2 = "$24 CAD listed price on Funko Collection.";
-        funkoPop.addComment(comment2);
-        assertEquals(2, funkoPop.getComments().size());
-        assertEquals(comment2, funkoPop.getComments().get(1));
     }
 
     @Test
