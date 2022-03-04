@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+// Represents a reader that reads user from JSON data stored in file
+// Code modified from JsonSerializationDemo
 public class JsonReader {
     private String source;
 
@@ -36,12 +38,13 @@ public class JsonReader {
         StringBuilder contentBuilder = new StringBuilder();
 
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s));
+            stream.forEach(contentBuilder::append);
         }
 
         return contentBuilder.toString();
     }
 
+    // EFFECTS: parses user from JSON object and returns it
     private User parseUser(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         User user = new User(name);
@@ -49,6 +52,8 @@ public class JsonReader {
         return user;
     }
 
+    // MODIFIES: user
+    // EFFECTS: parses collections from JSON object and adds them to user's collection list
     private void addCollections(User user, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("collections");
         for (Object json : jsonArray) {
@@ -57,6 +62,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: user
+    // EFFECTS: parses collection from JSON object and adds it to user's collection list
     private Collection addCollection(User user, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         Collection col = new Collection(name);

@@ -7,13 +7,13 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
-// Represents a user that has a list of collections
+// Represents a user that has a name and a list of collections
 public class User implements Writable {
 
     private List<Collection> collections;
     private String name;
 
-    // constructs a user with an empty list of collections, and a name
+    // EFFECTS: constructs a user with an empty list of collections, and a name
     public User(String name) {
         this.name = name;
         this.collections = new ArrayList<>();

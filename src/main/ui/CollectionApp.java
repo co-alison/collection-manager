@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 // Collection application
+// Code modified from TellerApp
 public class CollectionApp {
     private static final String JSON_STORE = "./data/collection.json";
     private User user;
@@ -25,7 +26,6 @@ public class CollectionApp {
         runCollection();
     }
 
-    // code modified from TellerApp
     // MODIFIES: this
     // EFFECTS: processes user input
     private void runCollection() {
@@ -56,8 +56,6 @@ public class CollectionApp {
 
         if (command.equals("s")) {
             saveCollection();
-        } else {
-            return;
         }
     }
 
@@ -73,7 +71,6 @@ public class CollectionApp {
         }
     }
 
-    // code modified from TellerApp
     // EFFECTS: initializes new user
     private void init() {
         input = new Scanner(System.in);
@@ -86,7 +83,6 @@ public class CollectionApp {
         user = new User(name);
     }
 
-    // code modified from TellerApp
     // EFFECTS: displays options for user command
     private void displayMenu() {
         System.out.println("\nWhat would you like to do today?");
@@ -99,7 +95,6 @@ public class CollectionApp {
         System.out.println("\tq -> quit");
     }
 
-    // code modified from TellerApp
     // EFFECTS: processes user command
     private void processCommand(String command) {
         if (command.equals("l")) {
