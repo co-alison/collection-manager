@@ -4,10 +4,7 @@ import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            new CollectionApp();
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to run application: file not found");
-        }
+        CollectionApp collectionApp = new CollectionApp();
+        collectionApp.setupGUI();
     }
 }

@@ -26,5 +26,5 @@ this passion to fellow collectors, or anyone who wants to start!
 - As a user, I want to be able to perform various functions on items such as:
   - Calculating the current average market price and price trend of an item.
   - Calculating the total value of a collection.
-- As a user, when I select from the main menu, I want to be reminded to save my collections to file and have the option to do so or not.
+- As a user, when I select quit from the main menu, I want to be reminded to save my collections to file and have the option to do so or not.
 - As a user, when I start the application, I want to be given the option to load my collections from file.

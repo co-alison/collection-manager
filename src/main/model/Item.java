@@ -160,4 +160,9 @@ public class Item implements Writable {
         json.put("category", category);
         return json;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -69,4 +69,9 @@ public class Collection implements Writable {
 
         return jsonArray;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
