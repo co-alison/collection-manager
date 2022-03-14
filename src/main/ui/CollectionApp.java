@@ -7,7 +7,8 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 // Collection application
@@ -127,6 +128,7 @@ public class CollectionApp {
 
         menu.addSeparator();
         menuItem = new JMenuItem("Calculate value");
+        menuItem.addActionListener(new TotalValueListener());
         menu.add(menuItem);
 
         menu.addSeparator();
@@ -156,7 +158,8 @@ public class CollectionApp {
         CollectionApp collectionApp = new CollectionApp();
         frame.setJMenuBar(collectionApp.createMenuBar());
         frame.add(collectionApp.splitPane);
-        frame.pack();
+        frame.setSize(new Dimension(550, 450));
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -197,6 +200,69 @@ public class CollectionApp {
                         + "<br><b>Condition</b>: " + i.getCondition() + " (Default condition: New)</br> \n"
                         + "<br><b>Category</b>: " + i.getCategory() + "</br> \n";
                 label.setText(summary);
+            }
+        }
+    }
+
+    public class TotalValueListener implements ActionListener {
+        JSplitPane splitPane;
+        JScrollPane scrollPane;
+        JLabel valueLabel;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create new window
+            JFrame calculateValueFrame = new JFrame("Calculate Value");
+
+            splitPane = new JSplitPane();
+            scrollPane = getCollectionScrollPane();
+
+            valueLabel = new JLabel();
+            valueLabel.setMinimumSize(new Dimension(200, 100));
+            valueLabel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createTitledBorder("Total Value"),
+                    BorderFactory.createEmptyBorder(10,10,10,10)));
+
+            collectionList.addListSelectionListener(new CalculateValueListener());
+
+            splitPane.setLeftComponent(scrollPane);
+            splitPane.setRightComponent(valueLabel);
+            splitPane.setOneTouchExpandable(true);
+//            splitPane.setDividerLocation(180);
+//            splitPane.setMinimumSize(new Dimension(400, 200));
+
+            calculateValueFrame.add(splitPane);
+            calculateValueFrame.setSize(new Dimension(550, 450));
+            calculateValueFrame.setLocationRelativeTo(null);
+            calculateValueFrame.setVisible(true);
+        }
+
+        public class CalculateValueListener implements ListSelectionListener {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+
+                if (collectionList.isSelectionEmpty()) {
+                    label.setText("<html> \n "
+                            + "<br>Select collection to calculate its total value. </br> \n"
+                            + "<b>Note: Default value of each item is $12.99</b>");
+                } else {
+                    Collection c = collectionList.getSelectedValue();
+                    String value = "<html> \n "
+                            + "<br><b>Total Value</b>: $" + c.calculateTotalValue() + "</br> \n"
+                            + "<br><b>Items</b></br>: \n"
+                            + "<ul> \n";
+
+                    for (Item i : c.getItems()) {
+                        value += "<li>" + i.getName() + "</li> \n";
+                    }
+
+                    value += "</ul>";
+                    valueLabel.setText(value);
+                }
             }
         }
     }
