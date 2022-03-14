@@ -6,6 +6,7 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // represents a collection of Items
 public class Collection implements Writable {
@@ -73,5 +74,18 @@ public class Collection implements Writable {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Collection)) return false;
+        Collection that = (Collection) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

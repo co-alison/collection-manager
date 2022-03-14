@@ -2,6 +2,10 @@ package ui;
 
 import model.Collection;
 import model.Item;
+import ui.listeners.CollectionListener;
+import ui.listeners.ItemListener;
+import ui.listeners.NewCollectionListener;
+import ui.listeners.TotalValueListener;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -12,8 +16,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 // Collection application
-// Code modified from TellerApp
+// Code modified from ...
 public class CollectionApp {
+
+    protected static final int WIDTH = 550;
+    protected static final int HEIGHT = 450;
 
     private Collection funko = new Collection("Funko Pop!");
     private Collection hotWheels = new Collection("Hot Wheels");
@@ -59,13 +66,13 @@ public class CollectionApp {
         topSplitPane.setRightComponent(itemScrollPane);
         topSplitPane.setOneTouchExpandable(true);
         topSplitPane.setDividerLocation(180);
-        topSplitPane.setMinimumSize(new Dimension(400, 100));
+        topSplitPane.setMinimumSize(new Dimension(WIDTH, HEIGHT / 2));
 
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topSplitPane, label);
         splitPane.setOneTouchExpandable(true);
-        splitPane.setDividerLocation(180);
+        splitPane.setDividerLocation(WIDTH / 2);
 
-        label.setMinimumSize(new Dimension(400, 200));
+        label.setMinimumSize(new Dimension(WIDTH, HEIGHT / 2));
         label.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Item Info"),
                 BorderFactory.createEmptyBorder(10,10,10,10)));
@@ -91,16 +98,16 @@ public class CollectionApp {
         itemScrollPane.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Items"),
                 BorderFactory.createEmptyBorder(10,10,10,10)));
-        itemScrollPane.setMinimumSize(new Dimension(200, 100));
+        itemScrollPane.setMinimumSize(new Dimension(WIDTH / 2, HEIGHT / 2));
         return itemScrollPane;
     }
 
-    private JScrollPane getCollectionScrollPane() {
+    protected JScrollPane getCollectionScrollPane() {
         JScrollPane collectionScrollPane = new JScrollPane(collectionList);
         collectionScrollPane.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Collections"),
                 BorderFactory.createEmptyBorder(10,10,10,10)));
-        collectionScrollPane.setMinimumSize(new Dimension(200, 100));
+        collectionScrollPane.setMinimumSize(new Dimension(WIDTH / 2, HEIGHT / 2));
         return collectionScrollPane;
     }
 
@@ -144,6 +151,7 @@ public class CollectionApp {
         menu.addSeparator();
         submenu = new JMenu(s);
         menuItem = new JMenuItem("Collection");
+        menuItem.addActionListener(new NewCollectionListener());
         submenu.add(menuItem);
         menuItem = new JMenuItem("Item");
         submenu.add(menuItem);
@@ -158,112 +166,30 @@ public class CollectionApp {
         CollectionApp collectionApp = new CollectionApp();
         frame.setJMenuBar(collectionApp.createMenuBar());
         frame.add(collectionApp.splitPane);
-        frame.setSize(new Dimension(550, 450));
+        frame.setSize(new Dimension(WIDTH, HEIGHT));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public class CollectionListener implements ListSelectionListener {
+    // getters
 
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            Collection c = collectionList.getSelectedValue();
-            List<Item> items = c.getItems();
-            itemModel.clear();
-
-            for (Item i : items) {
-                itemModel.addElement(i);
-            }
-
-            itemList.setModel(itemModel);
-        }
+    public JList<Collection> getCollectionList() {
+        return collectionList;
     }
 
-    public class ItemListener implements ListSelectionListener {
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (e.getValueIsAdjusting()) {
-                return;
-            }
-
-            if (itemList.isSelectionEmpty()) {
-                label.setText("Click on an item in the collection.");
-            } else {
-                Item i = itemList.getSelectedValue();
-                String summary = "<html>\n";
-                summary += "<br><b>Name</b>: " + i.getName() + "</br> \n"
-                        + "<br><b>Item Number</b>: " + i.getItemNumber() + "</br> \n"
-                        + "<br><b>Edition</b>: " + i.getEdition() + "</br> \n"
-                        + "<br><b>Exclusive</b>: " + i.getExclusive() + "</br> \n"
-                        + "<br><b>Release Date</b>: " + i.getReleaseDate() + "</br> \n"
-                        + "<br><b>Current Market Price</b>: $" + i.getCurrentMarketPrice() + " (Default price: 12.99)</br> \n"
-                        + "<br><b>Condition</b>: " + i.getCondition() + " (Default condition: New)</br> \n"
-                        + "<br><b>Category</b>: " + i.getCategory() + "</br> \n";
-                label.setText(summary);
-            }
-        }
+    public JList<Item> getItemList() {
+        return itemList;
     }
 
-    public class TotalValueListener implements ActionListener {
-        JSplitPane splitPane;
-        JScrollPane scrollPane;
-        JLabel valueLabel;
+    public DefaultListModel<Collection> getCollectionModel() {
+        return collectionModel;
+    }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Create new window
-            JFrame calculateValueFrame = new JFrame("Calculate Value");
+    public DefaultListModel<Item> getItemModel() {
+        return itemModel;
+    }
 
-            splitPane = new JSplitPane();
-            scrollPane = getCollectionScrollPane();
-
-            valueLabel = new JLabel();
-            valueLabel.setMinimumSize(new Dimension(200, 100));
-            valueLabel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createTitledBorder("Total Value"),
-                    BorderFactory.createEmptyBorder(10,10,10,10)));
-
-            collectionList.addListSelectionListener(new CalculateValueListener());
-
-            splitPane.setLeftComponent(scrollPane);
-            splitPane.setRightComponent(valueLabel);
-            splitPane.setOneTouchExpandable(true);
-//            splitPane.setDividerLocation(180);
-//            splitPane.setMinimumSize(new Dimension(400, 200));
-
-            calculateValueFrame.add(splitPane);
-            calculateValueFrame.setSize(new Dimension(550, 450));
-            calculateValueFrame.setLocationRelativeTo(null);
-            calculateValueFrame.setVisible(true);
-        }
-
-        public class CalculateValueListener implements ListSelectionListener {
-
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) {
-                    return;
-                }
-
-                if (collectionList.isSelectionEmpty()) {
-                    label.setText("<html> \n "
-                            + "<br>Select collection to calculate its total value. </br> \n"
-                            + "<b>Note: Default value of each item is $12.99</b>");
-                } else {
-                    Collection c = collectionList.getSelectedValue();
-                    String value = "<html> \n "
-                            + "<br><b>Total Value</b>: $" + c.calculateTotalValue() + "</br> \n"
-                            + "<br><b>Items</b></br>: \n"
-                            + "<ul> \n";
-
-                    for (Item i : c.getItems()) {
-                        value += "<li>" + i.getName() + "</li> \n";
-                    }
-
-                    value += "</ul>";
-                    valueLabel.setText(value);
-                }
-            }
-        }
+    public JLabel getLabel() {
+        return label;
     }
 }
