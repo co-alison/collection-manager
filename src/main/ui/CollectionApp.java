@@ -2,10 +2,6 @@ package ui;
 
 import model.Collection;
 import model.Item;
-import ui.listeners.CollectionListener;
-import ui.listeners.ItemListener;
-import ui.listeners.NewCollectionListener;
-import ui.listeners.TotalValueListener;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -154,6 +150,7 @@ public class CollectionApp {
         menuItem.addActionListener(new NewCollectionListener());
         submenu.add(menuItem);
         menuItem = new JMenuItem("Item");
+        menuItem.addActionListener(new NewItemListener());
         submenu.add(menuItem);
         menu.add(submenu);
     }
@@ -171,25 +168,260 @@ public class CollectionApp {
         frame.setVisible(true);
     }
 
-    // getters
+    private class CollectionListener implements ListSelectionListener {
 
-    public JList<Collection> getCollectionList() {
-        return collectionList;
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            Collection c = collectionList.getSelectedValue();
+            List<Item> items = c.getItems();
+            itemModel.clear();
+
+            for (Item i : items) {
+                itemModel.addElement(i);
+            }
+
+            itemList.setModel(itemModel);
+        }
     }
 
-    public JList<Item> getItemList() {
-        return itemList;
+    private class ItemListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (e.getValueIsAdjusting()) {
+                return;
+            }
+
+            if (itemList.isSelectionEmpty()) {
+                label.setText("Click on an item in the collection.");
+            } else {
+                Item i = itemList.getSelectedValue();
+                String summary = "<html>\n";
+                summary += "<br><b>Name</b>: " + i.getName() + "</br> \n"
+                        + "<br><b>Item Number</b>: " + i.getItemNumber() + "</br> \n"
+                        + "<br><b>Edition</b>: " + i.getEdition() + "</br> \n"
+                        + "<br><b>Exclusive</b>: " + i.getExclusive() + "</br> \n"
+                        + "<br><b>Release Date</b>: " + i.getReleaseDate() + "</br> \n"
+                        + "<br><b>Current Market Price</b>: $" + i.getCurrentMarketPrice()
+                        + " (Default price: 12.99)</br> \n"
+                        + "<br><b>Condition</b>: " + i.getCondition() + " (Default condition: New)</br> \n"
+                        + "<br><b>Category</b>: " + i.getCategory() + "</br> \n";
+                label.setText(summary);
+            }
+        }
     }
 
-    public DefaultListModel<Collection> getCollectionModel() {
-        return collectionModel;
+    private class TotalValueListener implements ActionListener {
+        JSplitPane splitPane;
+        JScrollPane scrollPane;
+        JLabel valueLabel;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create new window
+            JFrame calculateValueFrame = new JFrame("Calculate Value");
+
+            splitPane = new JSplitPane();
+            scrollPane = getCollectionScrollPane();
+
+            valueLabel = new JLabel();
+            valueLabel.setMinimumSize(new Dimension(WIDTH / 2, HEIGHT / 2));
+            valueLabel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createTitledBorder("Total Value"),
+                    BorderFactory.createEmptyBorder(10,10,10,10)));
+
+            collectionList.addListSelectionListener(new CalculateValueListener());
+
+            splitPane.setLeftComponent(scrollPane);
+            splitPane.setRightComponent(valueLabel);
+            splitPane.setOneTouchExpandable(true);
+
+            calculateValueFrame.add(splitPane);
+            calculateValueFrame.setSize(new Dimension(WIDTH, HEIGHT));
+            calculateValueFrame.setLocationRelativeTo(null);
+            calculateValueFrame.setVisible(true);
+        }
+
+        private class CalculateValueListener implements ListSelectionListener {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+
+                if (collectionList.isSelectionEmpty()) {
+                    label.setText("<html> \n "
+                            + "<br>Select collection to calculate its total value. </br> \n"
+                            + "<b>Note: Default value of each item is $12.99</b>");
+                } else {
+                    Collection c = collectionList.getSelectedValue();
+                    String value = "<html> \n "
+                            + "<br><b>Total Value</b>: $" + c.calculateTotalValue() + "</br> \n"
+                            + "<br><b>Items</b></br>: \n"
+                            + "<ul> \n";
+
+                    for (Item i : c.getItems()) {
+                        value += "<li>" + i.getName() + "</li> \n";
+                    }
+
+                    value += "</ul>";
+                    valueLabel.setText(value);
+                }
+            }
+        }
     }
 
-    public DefaultListModel<Item> getItemModel() {
-        return itemModel;
+    private class NewCollectionListener implements ActionListener {
+        private Container container;
+        private JLabel name;
+        private JTextField nameTextField;
+        private JButton submit;
+        private JLabel log;
+        private JLabel currentCollections;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create new window
+            JFrame newCollectionFrame = new JFrame("New Collection");
+
+            container = newCollectionFrame.getContentPane();
+            container.setLayout(null);
+
+            createNameLabel();
+            createNameTextField();
+            createSubmitButton();
+            createLogLabel();
+            createCurrentCollectionsLabel();
+
+            newCollectionFrame.setSize(new Dimension(WIDTH, HEIGHT));
+            newCollectionFrame.setLocationRelativeTo(null);
+            newCollectionFrame.setVisible(true);
+        }
+
+        private void createCurrentCollectionsLabel() {
+            String text = getCurrentCollections();
+            currentCollections = new JLabel(text);
+            currentCollections.setSize(200, HEIGHT / 2);
+            currentCollections.setLocation(WIDTH / 2 + 50, 100);
+            currentCollections.setBorder(BorderFactory.createTitledBorder("Collections"));
+            container.add(currentCollections);
+        }
+
+        private void createLogLabel() {
+            log = new JLabel("");
+            log.setSize(WIDTH / 2,25);
+            log.setLocation(50,200);
+            container.add(log);
+        }
+
+        private void createSubmitButton() {
+            submit = new JButton("Create");
+            submit.setSize(100,20);
+            submit.setLocation(110,150);
+            submit.setBorder(BorderFactory.createLineBorder(Color.black));
+            submit.addActionListener(new SubmitListener());
+            container.add(submit);
+        }
+
+        private void createNameTextField() {
+            nameTextField = new JTextField();
+            nameTextField.setSize(190,20);
+            nameTextField.setLocation(100,100);
+            container.add(nameTextField);
+        }
+
+        private void createNameLabel() {
+            name = new JLabel("Name");
+            name.setSize(50, 20);
+            name.setLocation(50,100);
+            container.add(name);
+        }
+
+        private String getCurrentCollections() {
+            String text = "<html> \n"
+                    + "<ul> \n";
+
+            for (int i = 0; i < collectionModel.getSize(); i++) {
+                Collection c = collectionModel.getElementAt(i);
+                text += "<li>" + c.getName() + "</li> \n";
+            }
+            return text;
+        }
+
+        private class SubmitListener implements ActionListener {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == submit) {
+                    String name = nameTextField.getText();
+                    if (!nameTextField.getText().isEmpty()) {
+                        Collection c = new Collection(name);
+                        if (!collectionModel.contains(c)) {
+                            collectionModel.addElement(c);
+                            collectionList.setModel(collectionModel);
+                            log.setText("Collection added successfully.");
+                        } else {
+                            log.setText("Collection has already been added.");
+                        }
+                        currentCollections.setText(getCurrentCollections());
+                    } else {
+                        log.setText("Please enter a name for your collection.");
+                    }
+                }
+            }
+        }
     }
 
-    public JLabel getLabel() {
-        return label;
+    private class NewItemListener implements ActionListener {
+        private JPanel panel;
+        private Container container;
+        private JLabel name;
+        private JTextField nameTextField;
+        private JLabel itemNumber;
+        private JTextField itemNumberTextField;
+        private JLabel edition;
+        private JTextField editionTextField;
+        private JLabel exclusive;
+        private JTextField exclusiveTextField;
+        private JLabel releaseDate;
+        private JTextField releaseDateTextField;
+        private JLabel price;
+        private JTextField priceTextField;
+        private JLabel condition;
+        private JTextField conditionTextField;
+        private JLabel category;
+        private JTextField categoryTextField;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Create new window
+            JFrame newItemFrame = new JFrame("New Item");
+
+            container = newItemFrame.getContentPane();
+            container.setLayout(null);
+
+            panel = new JPanel();
+            addToPanel(name, "Name: ", nameTextField);
+            addToPanel(itemNumber, "Item Number: ", itemNumberTextField);
+            addToPanel(edition, "Edition: ", editionTextField);
+            addToPanel(exclusive, "Exclsuive: ", exclusiveTextField);
+            addToPanel(releaseDate, "Release Date (MM DD YYYY): ", releaseDateTextField);
+            addToPanel(category, "Category: ", categoryTextField);
+
+            panel.setOpaque(true);
+            newItemFrame.setContentPane(panel);
+            newItemFrame.pack();
+            newItemFrame.setSize(WIDTH, HEIGHT);
+            newItemFrame.setLocationRelativeTo(null);
+            newItemFrame.setVisible(true);
+        }
+
+        public void addToPanel(JLabel label, String labelName, int posX, int posY) {
+            label = new JLabel(labelName);
+            label.setSize(50, 20);
+            label.setLocation(posX, posY);
+            container.add(label);
+        }
     }
 }
