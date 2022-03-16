@@ -386,12 +386,19 @@ public class CollectionApp {
         private JTextField exclusiveTextField;
         private JLabel releaseDate;
         private JTextField releaseDateTextField;
+        private JButton calculatePrice;
         private JLabel price;
-        private JTextField priceTextField;
         private JLabel condition;
         private JTextField conditionTextField;
         private JLabel category;
         private JTextField categoryTextField;
+        private JRadioButton newCondition;
+        private JRadioButton mintCondition;
+        private JRadioButton goodCondition;
+        private JRadioButton fairCondition;
+        private JRadioButton poorCondition;
+        private JButton submit;
+
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -401,27 +408,79 @@ public class CollectionApp {
             container = newItemFrame.getContentPane();
             container.setLayout(null);
 
-            panel = new JPanel();
-            addToPanel(name, "Name: ", nameTextField);
-            addToPanel(itemNumber, "Item Number: ", itemNumberTextField);
-            addToPanel(edition, "Edition: ", editionTextField);
-            addToPanel(exclusive, "Exclsuive: ", exclusiveTextField);
-            addToPanel(releaseDate, "Release Date (MM DD YYYY): ", releaseDateTextField);
-            addToPanel(category, "Category: ", categoryTextField);
+            createLabelWithTextField();
+            createRadioButton(newCondition, "New", 130, 230);
+            createRadioButton(mintCondition, "Near Mint", 210, 230);
+            createRadioButton(goodCondition, "Good", 290, 230);
+            createRadioButton(fairCondition, "Fair", 370, 230);
+            createRadioButton(poorCondition, "Poor", 450, 230);
 
-            panel.setOpaque(true);
-            newItemFrame.setContentPane(panel);
+            createCalculatePriceButton();
+            createSubmitButton();
+
             newItemFrame.pack();
-            newItemFrame.setSize(WIDTH, HEIGHT);
+            newItemFrame.setSize(WIDTH + 100, HEIGHT);
             newItemFrame.setLocationRelativeTo(null);
             newItemFrame.setVisible(true);
         }
 
-        public void addToPanel(JLabel label, String labelName, int posX, int posY) {
+        private void createLabelWithTextField() {
+            createLabel(name, "Name: ", 50, 50);
+            createTextField(nameTextField, 250, 50);
+            createLabel(itemNumber, "Item Number: ", 50, 80);
+            createTextField(itemNumberTextField, 250, 80);
+            createLabel(edition, "Edition: ", 50, 110);
+            createTextField(editionTextField, 250, 110);
+            createLabel(exclusive, "Exclusive: ", 50, 140);
+            createTextField(exclusiveTextField, 250, 140);
+            createLabel(releaseDate, "Release Date (MM DD YYYY): ", 50, 170);
+            createTextField(releaseDateTextField, 250, 170);
+            createLabel(category, "Category: ", 50, 200);
+            createTextField(categoryTextField, 250, 200);
+            createLabel(condition, "Condition: ", 50, 230);
+        }
+
+        private void createTextField(JTextField textField, int posX, int posY) {
+            textField = new JTextField();
+            textField.setSize(190, 20);
+            textField.setLocation(posX, posY);
+            container.add(textField);
+
+        }
+
+        private void createSubmitButton() {
+            submit = new JButton("Add Item");
+            submit.setSize(100,20);
+            submit.setLocation(WIDTH / 2,400);
+            submit.setBorder(BorderFactory.createLineBorder(Color.black));
+            //submit.addActionListener(new AddItemListener());
+            container.add(submit);
+        }
+
+        private void createCalculatePriceButton() {
+            calculatePrice = new JButton("Calculate Average Market Price");
+            calculatePrice.setSize(200, 20);
+            calculatePrice.setLocation(50, 270);
+            calculatePrice.setBorder(BorderFactory.createLineBorder(Color.black));
+            container.add(calculatePrice);
+            //calculatePrice.addActionListener(new CalculatePriceListener());
+        }
+
+        public void createLabel(JLabel label, String labelName, int posX, int posY) {
             label = new JLabel(labelName);
-            label.setSize(50, 20);
+            label.setSize(200, 20);
             label.setLocation(posX, posY);
             container.add(label);
         }
+
+        public void createRadioButton(JRadioButton button, String buttonName, int posX, int posY) {
+            button = new JRadioButton(buttonName);
+            button.setSelected(false);
+            button.setSize(80, 20);
+            button.setLocation(posX, posY);
+            container.add(button);
+        }
+        // TODO: CalculatePriceListener
+        // TODO: AddItemListener
     }
 }
