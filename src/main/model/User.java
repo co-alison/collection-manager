@@ -19,6 +19,10 @@ public class User implements Writable {
         this.collections = new ArrayList<>();
     }
 
+    public User() {
+        this.collections = new ArrayList<>();
+    }
+
     // MODIFIES: this
     // EFFECTS: adds given collection to list of collections
     public void addCollection(Collection c) {

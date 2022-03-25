@@ -29,7 +29,7 @@ public class JsonReaderTest extends JsonTest {
         JsonReader reader = new JsonReader("./data/testReaderNoCollection.json");
         try {
             User user = reader.read();
-            assertEquals("Alison", user.getName());
+//            assertEquals("Alison", user.getName()); // removed name field
             assertEquals(0, user.getCollections().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
@@ -41,7 +41,7 @@ public class JsonReaderTest extends JsonTest {
         JsonReader reader = new JsonReader("./data/testReaderNoItems.json");
         try {
             User user = reader.read();
-            assertEquals("Alison", user.getName());
+//            assertEquals("Alison", user.getName()); // removed name field
             List<Collection> collections = user.getCollections();
             assertEquals(2, collections.size());
             Collection collection1 = collections.get(0);
@@ -60,7 +60,7 @@ public class JsonReaderTest extends JsonTest {
         JsonReader reader = new JsonReader("./data/testReaderGeneralUser.json");
         try {
             User user = reader.read();
-            assertEquals("Alison", user.getName());
+//            assertEquals("Alison", user.getName()); // removed name field
             List<Collection> collections = user.getCollections();
             assertEquals(1, collections.size());
             Collection collection = collections.get(0);

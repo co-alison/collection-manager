@@ -84,8 +84,8 @@ public class Collection implements Writable {
         return name.equals(that.name);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name);
+//    }
 }

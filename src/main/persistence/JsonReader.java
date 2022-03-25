@@ -46,8 +46,9 @@ public class JsonReader {
 
     // EFFECTS: parses user from JSON object and returns it
     private User parseUser(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        User user = new User(name);
+//        String name = jsonObject.getString("name");
+//        User user = new User(name);
+        User user = new User(); // CollectionApp no longer requires name for user
         addCollections(user, jsonObject);
         return user;
     }

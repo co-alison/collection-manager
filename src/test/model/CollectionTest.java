@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CollectionTest {
     Collection collection;
@@ -66,5 +66,16 @@ public class CollectionTest {
         collection.addItem(leota);
 
         assertEquals(collection.calculateTotalValue(), Math.round((geoffreyAverage + leotaAverage)* 100.0) / 100.0);
+    }
+
+    public void toStringTest() {
+        assertEquals(collection.toString(),"Funko Pop!");
+    }
+
+    public void equalsTest() {
+        Collection collection1 = new Collection("false");
+        Collection collection2 = new Collection("Funko Pop!");
+        assertTrue(collection.equals(collection2));
+        assertFalse(collection.equals(collection1));
     }
 }
