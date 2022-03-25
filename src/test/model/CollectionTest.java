@@ -68,14 +68,17 @@ public class CollectionTest {
         assertEquals(collection.calculateTotalValue(), Math.round((geoffreyAverage + leotaAverage)* 100.0) / 100.0);
     }
 
+    @Test
     public void toStringTest() {
         assertEquals(collection.toString(),"Funko Pop!");
     }
 
+    @Test
     public void equalsTest() {
         Collection collection1 = new Collection("false");
         Collection collection2 = new Collection("Funko Pop!");
         assertTrue(collection.equals(collection2));
         assertFalse(collection.equals(collection1));
+        assertFalse(collection.equals(geoffrey));
     }
 }

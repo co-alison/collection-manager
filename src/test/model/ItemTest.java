@@ -79,6 +79,7 @@ public class ItemTest {
         assertEquals(funkoPop.getCondition(), defaultCondition);
     }
 
+    @Test
     public void toStringTest() {
         assertEquals(funkoPop.toString(), "Alien");
     }
