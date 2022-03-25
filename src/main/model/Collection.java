@@ -78,8 +78,12 @@ public class Collection implements Writable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Collection)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Collection)) {
+            return false;
+        }
         Collection that = (Collection) o;
         return name.equals(that.name);
     }
