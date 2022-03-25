@@ -102,6 +102,8 @@ public class CollectionApp {
         panel.add(buttonPane, BorderLayout.PAGE_END);
     }
 
+    // SOURCE: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/
+    // javase/tutorial/uiswing/examples/components/ListDialogRunnerProject/src/components/ListDialog.java
     // EFFECTS: create delete collection button and delete item button, add to panel
     private JPanel getDeleteButtonPane() {
         deleteCollection = new JButton("Delete Collection");
@@ -160,6 +162,8 @@ public class CollectionApp {
         return collectionScrollPane;
     }
 
+    // SOURCE: https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/
+    // javase/tutorial/uiswing/examples/components/MenuLookDemoProject/src/components/MenuLookDemo.java
     // EFFECTS: creates a menu bar with options to load, create new collection/item, and save/quit
     public JMenuBar createMenuBar() {
         JMenuBar menuBar;
@@ -223,6 +227,7 @@ public class CollectionApp {
         frame.setVisible(true);
     }
 
+    // SOURCE: https://stackoverflow.com/questions/16134549/how-to-make-a-splash-screen-for-gui
     // EFFECTS: creates a new window that displays loading animation
     public void createSplashScreen() {
         JWindow window = new JWindow();
@@ -242,6 +247,7 @@ public class CollectionApp {
         window.dispose();
     }
 
+    // SOURCE: https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html
     // EFFECTS: creates image icon from given url path, else prints error
     public ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = getClass().getResource(path);
