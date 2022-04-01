@@ -29,6 +29,11 @@ public class User implements Writable {
         collections.add(c);
     }
 
+    public void removeCollection(int index) {
+        EventLog.getInstance().logEvent(new Event("Deleted collection " + collections.get(index).getName()));
+        collections.remove(index);
+    }
+
     // getters
 
     public List<Collection> getCollections() {

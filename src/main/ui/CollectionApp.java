@@ -1,6 +1,8 @@
 package ui;
 
 import model.Collection;
+import model.Event;
+import model.EventLog;
 import model.Item;
 import model.User;
 import persistence.JsonReader;
@@ -13,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -217,14 +220,40 @@ public class CollectionApp {
 
         // Create and set up window
         frame = new JFrame("Collection Manager");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new FrameWindowListener());
         CollectionApp collectionApp = new CollectionApp();
         frame.setJMenuBar(collectionApp.createMenuBar());
         frame.add(collectionApp.panel);
         frame.setSize(new Dimension(WIDTH, HEIGHT));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private class FrameWindowListener implements WindowListener {
+        @Override
+        public void windowOpened(WindowEvent e) {}
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            printLog(EventLog.getInstance());
+            System.exit(0);
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {}
+
+        @Override
+        public void windowIconified(WindowEvent e) {}
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {}
+
+        @Override
+        public void windowActivated(WindowEvent e) {}
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {}
     }
 
     // SOURCE: https://stackoverflow.com/questions/16134549/how-to-make-a-splash-screen-for-gui
@@ -318,8 +347,10 @@ public class CollectionApp {
         // EFFECTS: removes selected collection from collectionModel
         @Override
         public void actionPerformed(ActionEvent e) {
+            setUser();
             int index = collectionList.getSelectedIndex();
             collectionModel.remove(index);
+            user.removeCollection(index);
 
             int size = collectionModel.getSize();
 
@@ -345,8 +376,12 @@ public class CollectionApp {
         // EFFECTS: deletes selected item from itemModel
         @Override
         public void actionPerformed(ActionEvent e) {
-            int index = itemList.getSelectedIndex();
-            itemModel.remove(index);
+            int itemIndex = itemList.getSelectedIndex();
+            int collectionIndex = collectionList.getSelectedIndex();
+            Collection c = collectionModel.getElementAt(collectionIndex);
+            c.removeItem(itemModel.getElementAt(itemIndex));
+
+            itemModel.remove(itemIndex);
         }
     }
 
@@ -548,7 +583,7 @@ public class CollectionApp {
         }
 
         // MODIFIES: container
-        // EFFECTS: creates a label from given name and position, creates textfield from given posiiton
+        // EFFECTS: creates a label from given name and position, creates textfield from given position
         private void createLabelTextField(JLabel label, String labelName, JTextField textField,
                                           int labelPosY, int textPosY) {
             label = new JLabel(labelName);
@@ -734,10 +769,7 @@ public class CollectionApp {
         // EFFECTS: adds collections in collectionModel to user
         private void save() {
             try {
-                for (int i = 0; i < collectionModel.getSize(); i++) {
-                    Collection c = collectionModel.getElementAt(i);
-                    user.addCollection(c);
-                }
+                setUser();
                 jsonWriter.open();
                 jsonWriter.write(user);
                 jsonWriter.close();
@@ -759,5 +791,19 @@ public class CollectionApp {
             text.append("<li>").append(c.getName()).append("</li> \n");
         }
         return text.toString();
+    }
+
+    private void setUser() {
+        user.getCollections().clear();
+        for (int i = 0; i < collectionModel.getSize(); i++) {
+            Collection c = collectionModel.getElementAt(i);
+            user.addCollection(c);
+        }
+    }
+
+    private void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.toString() + "\n\n");
+        }
     }
 }

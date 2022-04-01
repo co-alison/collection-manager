@@ -6,7 +6,6 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // represents a collection of Items
 public class Collection implements Writable {
@@ -18,18 +17,21 @@ public class Collection implements Writable {
     public Collection(String name) {
         this.name = name;
         this.items = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Added new collection " + name));
     }
 
     // MODIFIES: this
     // EFFECTS: adds item to collection
     public void addItem(Item item) {
         items.add(item);
+        EventLog.getInstance().logEvent(new Event("Added new item " + item.getName() + " to " + this.name));
     }
 
     // MODIFIES: this
     // EFFECTS: removes item from collection
     public void removeItem(Item item) {
         items.remove(item);
+        EventLog.getInstance().logEvent(new Event("Deleted item " + item.getName() + " from " + this.name));
     }
 
     // REQUIRES: at least one item in collection, each item has a current market price
@@ -87,9 +89,4 @@ public class Collection implements Writable {
         Collection that = (Collection) o;
         return name.equals(that.name);
     }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(name);
-//    }
 }
